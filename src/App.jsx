@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/layout/Navbar";
 import Home from "./pages/Home";
 import About from "./pages/About";
-import Notfound from "./pages/NOtfound";
+import Notfound from "./pages/Notfound";
 import Alert from "./components/layout/Alert";
 import Footer from "./components/layout/Footer";
 import { GithubProvider } from "./context/github/GithubContext";

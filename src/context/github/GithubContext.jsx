@@ -17,21 +17,42 @@ export const GithubProvider = ({ children }) => {
   const [state, dispatch] = useReducer(GithubReducer, initialState);
 
   // Get Search users from API
+  // const searchUsers = async (text) => {
+  //   setLoading();
+  //   const params = new URLSearchParams({
+  //     q: text,
+  //   });
+  //   const response = await fetch(`${GITHUB_URL}/search/users?${params}`, {
+  //     headers: {
+  //       Authorization: `token ${GITHUB_TOKEN}`,
+  //     },
+  //   });
+  //   const { items } = await response.json();
+  //   dispatch({
+  //     type: "GET_USERS",
+  //     payload: items,
+  //   });
+  // };
   const searchUsers = async (text) => {
     setLoading();
-    const params = new URLSearchParams({
-      q: text,
-    });
-    const response = await fetch(`${GITHUB_URL}/search/users?${params}`, {
-      headers: {
-        Authorization: `token ${GITHUB_TOKEN}`,
-      },
-    });
-    const { items } = await response.json();
-    dispatch({
-      type: "GET_USERS",
-      payload: items,
-    });
+    try {
+      const params = new URLSearchParams({ q: text });
+
+      const response = await fetch(`${GITHUB_URL}/search/users?${params}`, {
+        headers: {
+          Authorization: GITHUB_TOKEN ? `token ${GITHUB_TOKEN}` : "",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch users");
+      }
+
+      const { items } = await response.json();
+      dispatch({ type: "GET_USERS", payload: items });
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
   };
 
   const userRepos = async (login) => {
